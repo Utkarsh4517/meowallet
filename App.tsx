@@ -11,27 +11,45 @@ import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {OnboardingScreen} from './src/screens/OnboardingScreen';
 import {HomeScreen} from './src/screens/HomeScreen';
 import {WalletScreen} from './src/screens/WalletScreen';
 import {SwapScreen} from './src/screens/SwapScreen';
 import {SettingsScreen} from './src/screens/SettingsScreen';
+import SelectWallet from './src/screens/SelectWallet';
+import {ImportWallet} from './src/screens/ImportWallet';
+import {CreateWallet} from './src/screens/CreateWallet';
 
 const Tab = createBottomTabNavigator();
+const OnboardingStack = createNativeStackNavigator();
 
 enableScreens();
+
+
+
 function App(): React.JSX.Element {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+
+  function OnboardingNavigator() {
+    return (
+      <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
+     
+        <OnboardingStack.Screen name="Welcome" component={OnboardingScreen} />
+        <OnboardingStack.Screen name="SelectWallet" component={SelectWallet} />
+        <OnboardingStack.Screen name="ImportWallet" component={ImportWallet} />
+        <OnboardingStack.Screen name="CreateWallet" component={CreateWallet} />
+      </OnboardingStack.Navigator>
+    );
+  }
 
   if (!hasCompletedOnboarding) {
     return (
       <SafeAreaProvider>
-        <OnboardingScreen
-          onComplete={() => {
-            console.log('onboarding complete');
-            setHasCompletedOnboarding(true)}}
-        />
+        <NavigationContainer>
+          <OnboardingNavigator />
+        </NavigationContainer>
       </SafeAreaProvider>
     );
   }

@@ -1,12 +1,13 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {Button} from '../components/Button';
-
+import {useNavigation} from '@react-navigation/native';
 type OnboardingScreenProps = {
   onComplete: () => void;
 };
 
 export const OnboardingScreen = ({onComplete}: OnboardingScreenProps) => {
+  const navigation = useNavigation();
   return (
     <View className="flex-1 bg-[#E9FFE4] justify-between items-center p-4">
       <View className="flex-1 justify-center items-center">
@@ -24,7 +25,7 @@ export const OnboardingScreen = ({onComplete}: OnboardingScreenProps) => {
         </Text>
       </View>
 
-      <Button onPress={onComplete} title="Get Started" />
+      <Button onPress={() => navigation.navigate('SelectWallet' as never)} title="Get Started" />
     </View>
   );
 };
