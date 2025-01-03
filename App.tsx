@@ -23,6 +23,7 @@ import {SettingsScreen} from './src/screens/SettingsScreen';
 import SelectWallet from './src/screens/SelectWallet';
 import {ImportWallet} from './src/screens/ImportWallet';
 import {CreateWallet} from './src/screens/CreateWallet';
+import { CustomTabBar } from './src/components/CustomTabBar';
 
 const Tab = createBottomTabNavigator();
 const OnboardingStack = createNativeStackNavigator();
@@ -37,6 +38,7 @@ function App(): React.JSX.Element {
   function OnboardingNavigator() {
     return (
       <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
+        {/* @ts-ignore */}
         <OnboardingStack.Screen name="Welcome" component={OnboardingScreen} />
         <OnboardingStack.Screen name="SelectWallet" component={SelectWallet} />
         <OnboardingStack.Screen name="ImportWallet" component={ImportWallet} />
@@ -55,43 +57,26 @@ function App(): React.JSX.Element {
   function TabNavigator() {
     return (
       <Tab.Navigator
+        tabBar={props => <CustomTabBar {...props} />}
         screenOptions={{
-          tabBarActiveTintColor: '#3b82f6',
-          tabBarInactiveTintColor: '#6b7280',
-          tabBarStyle: {
-            backgroundColor: 'white',
-            borderTopWidth: 1,
-            borderTopColor: '#e5e7eb',
-          },
           headerShown: false,
+          tabBarShowLabel: false,
         }}>
         <Tab.Screen
           name="Home"
           component={HomeScreen}
-          options={{
-            tabBarLabel: 'Home',
-          }}
         />
         <Tab.Screen
           name="Wallet"
           component={WalletScreen}
-          options={{
-            tabBarLabel: 'Wallet',
-          }}
         />
         <Tab.Screen
           name="Swap"
           component={SwapScreen}
-          options={{
-            tabBarLabel: 'Swap',
-          }}
         />
         <Tab.Screen
           name="Settings"
           component={SettingsScreen}
-          options={{
-            tabBarLabel: 'Settings',
-          }}
         />
       </Tab.Navigator>
     );
