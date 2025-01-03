@@ -6,6 +6,8 @@
  */
 
 import './global.css';
+import 'react-native-get-random-values'
+import 'react-native-url-polyfill/auto';
 import React, {useState} from 'react';
 import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
@@ -35,68 +37,70 @@ function App(): React.JSX.Element {
   function OnboardingNavigator() {
     return (
       <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
-     
         <OnboardingStack.Screen name="Welcome" component={OnboardingScreen} />
         <OnboardingStack.Screen name="SelectWallet" component={SelectWallet} />
         <OnboardingStack.Screen name="ImportWallet" component={ImportWallet} />
-        <OnboardingStack.Screen name="CreateWallet" component={CreateWallet} />
+        <OnboardingStack.Screen 
+          name="CreateWallet" 
+          children={() => (
+            <CreateWallet 
+              onComplete={() => setHasCompletedOnboarding(true)} 
+            />
+          )}
+        />
       </OnboardingStack.Navigator>
     );
   }
 
-  if (!hasCompletedOnboarding) {
+  function TabNavigator() {
     return (
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <OnboardingNavigator />
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: '#3b82f6',
+          tabBarInactiveTintColor: '#6b7280',
+          tabBarStyle: {
+            backgroundColor: 'white',
+            borderTopWidth: 1,
+            borderTopColor: '#e5e7eb',
+          },
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: 'Home',
+          }}
+        />
+        <Tab.Screen
+          name="Wallet"
+          component={WalletScreen}
+          options={{
+            tabBarLabel: 'Wallet',
+          }}
+        />
+        <Tab.Screen
+          name="Swap"
+          component={SwapScreen}
+          options={{
+            tabBarLabel: 'Swap',
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            tabBarLabel: 'Settings',
+          }}
+        />
+      </Tab.Navigator>
     );
   }
 
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{
-            tabBarActiveTintColor: '#3b82f6',
-            tabBarInactiveTintColor: '#6b7280',
-            tabBarStyle: {
-              backgroundColor: 'white',
-              borderTopWidth: 1,
-              borderTopColor: '#e5e7eb',
-            },
-            headerShown: false,
-          }}>
-          <Tab.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              tabBarLabel: 'Home',
-            }}
-          />
-          <Tab.Screen
-            name="Wallet"
-            component={WalletScreen}
-            options={{
-              tabBarLabel: 'Wallet',
-            }}
-          />
-          <Tab.Screen
-            name="Swap"
-            component={SwapScreen}
-            options={{
-              tabBarLabel: 'Swap',
-            }}
-          />
-          <Tab.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{
-              tabBarLabel: 'Settings',
-            }}
-          />
-        </Tab.Navigator>
+        {!hasCompletedOnboarding ? <OnboardingNavigator /> : <TabNavigator />}
       </NavigationContainer>
     </SafeAreaProvider>
   );
