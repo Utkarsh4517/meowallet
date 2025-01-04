@@ -1,10 +1,42 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 // @ts-ignore
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const HomeScreen = () => {
   const [activeTab, setActiveTab] = React.useState('assets');
+
+  const renderContent = () => {
+    if (activeTab === 'assets') {
+      return (
+        <View className="pb-10 items-center mt-8  bg-white rounded-3xl w-[90%]">
+          <Image 
+            source={require('../assets/images/cat1.png')} 
+            className="w-60 h-60"
+            resizeMode="contain"
+          />
+         
+          <Text className="text-sm text-[#AEAEAE] text-center mt-2 px-8">
+            Your crypto kitty bank is empty. Time to add some digital assets!
+          </Text>
+        </View>
+      );
+    }
+
+    return (
+      <View className=" pb-10 items-center mt-8 bg-white rounded-3xl mx-4 w-[90%]">
+        <Image 
+          source={require('../assets/images/cat2.png')} 
+          className="w-60 h-60 ml-6"
+          resizeMode="contain"
+        />
+        
+        <Text className="text-sm text-[#AEAEAE] text-center mt-2 px-8">
+          Your transaction history is as quiet as a sleeping cat. Make your first move!
+        </Text>
+      </View>
+    );
+  };
 
   return (
     <View className="flex-1 bg-[#F5F5F7] items-center">
@@ -84,6 +116,8 @@ export const HomeScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {renderContent()}
     </View>
   );
 };
